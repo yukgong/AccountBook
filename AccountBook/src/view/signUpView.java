@@ -10,20 +10,15 @@ import dao.MemberDao;
 public class signUpView extends JFrame implements ActionListener {
 	private JTextField textField[];
 	private JLabel title;
-	private JLabel lable[];
-	private JButton signUpBtn, checkId;
+	private JLabel label[];
+	private JButton signUpBtn, checkIdBtn, preBtn;
 
 	public signUpView() {
 		super("Sign up");
 
 		setLayout(null);
 
-//		JPanel panel = new JPanel();
-
-		// Lable --------------------------------
-
-		lable = new JLabel[4];
-
+		// title -------------------------------
 		title = new JLabel("Sign up");
 		title.setBounds(20, 30, 260, 24);
 		title.setHorizontalAlignment(JLabel.CENTER);
@@ -31,15 +26,18 @@ public class signUpView extends JFrame implements ActionListener {
 		title.setFont(f1);
 		add(title);
 
-		lable[0] = new JLabel("ID");
-		lable[1] = new JLabel("PW");
-		lable[2] = new JLabel("name");
-		lable[3] = new JLabel("E-mail");
 
-		for (int i = 0; i < lable.length; i++) {
-			lable[i].setBackground(new Color(200, 200, 200));
-			lable[i].setBounds(20, 65 + (65 * i), 100, 30);
-			add(lable[i]);
+		// Label --------------------------------
+
+		label = new JLabel[4];
+		
+		String textLabel[] = {"ID", "PW", "Name", "E-mail"};
+
+		for (int i = 0; i < label.length; i++) {
+			label[i] = new JLabel(textLabel[i]);
+			label[i].setBackground(new Color(200, 200, 200));
+			label[i].setBounds(20, 65 + (65 * i), 100, 30);
+			add(label[i]);
 		}
 
 		// TextField ----------------------------
@@ -54,17 +52,20 @@ public class signUpView extends JFrame implements ActionListener {
 
 		// Btn -----------------------------------
 
-		signUpBtn = new JButton();
-
 		signUpBtn = new JButton("Sign up");
 		signUpBtn.addActionListener(this);
 		signUpBtn.setBounds(20, 353, 260, 36);
 		add(signUpBtn);
 
-		checkId = new JButton("check");
-		checkId.addActionListener(this);
-		checkId.setBounds(196, 95, 84, 30);
-		add(checkId);
+		checkIdBtn = new JButton("Check");
+		checkIdBtn.addActionListener(this);
+		checkIdBtn.setBounds(196, 95, 84, 30);
+		add(checkIdBtn);
+		
+		preBtn = new JButton("<");
+		preBtn.addActionListener(this);
+		preBtn.setBounds(0, 0, 50, 30);
+		add(preBtn);
 
 		// Basic setting -------------------------
 		setBounds(100, 100, 316, 470);
@@ -78,8 +79,15 @@ public class signUpView extends JFrame implements ActionListener {
 		JButton btn = (JButton) e.getSource();
 		String btnTitle = btn.getLabel();
 		
+		// 뒤로가기
+		if (btnTitle.equals("<")) {
+				dispose();
+				new loginView();
+
+		}
+		
 		//id가 중복인지 확인하기--------------------------------------------
-		if (btnTitle.equals("check")) {
+		if (btnTitle.equals("Check")) {
 
 			// id 확인
 			MemberDao dao = MemberDao.getInstace();
@@ -94,7 +102,7 @@ public class signUpView extends JFrame implements ActionListener {
 			}
 		}
 		
-		//id가 중복인지 확인하기--------------------------------------------
+		//Sign up 완료시--------------------------------------------
 		if (btnTitle.equals("Sign up")) {
 
 			// id 확인
@@ -113,6 +121,8 @@ public class signUpView extends JFrame implements ActionListener {
 				new loginView();
 			} else {
 				JOptionPane.showMessageDialog(null, "등록을 실패했습니다.");
+				dispose();
+				new loginView();
 			}
 		}
 	}

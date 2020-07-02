@@ -48,17 +48,21 @@ public class MenuView extends JFrame implements ActionListener  {
 		JButton btn = (JButton) e.getSource();
 		String btnTitle = btn.getLabel();
 		
-		// 뒤로가기
 		if (btnTitle.equals("입/출 내역 추가하기")) {
 				dispose();
 				new AddView();
 
 		}
 		
-		// 뒤로가기
 		if (btnTitle.equals("기간별 검색하기")) {
 				dispose();
 				new FilterByPeriodView();
+
+		}
+		
+		if (btnTitle.equals("항목별 검색하기")) {
+				dispose();
+				new FilterByTextView();
 
 		}
 		

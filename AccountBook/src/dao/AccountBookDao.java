@@ -101,4 +101,44 @@ public class AccountBookDao {
 
 		return list;
 	}
+	
+	public List<AccountBookDto> FilterByText(String id, String content) {
+		String likestr = "%" + content +"%";
+		
+		String sql = " SELECT IO_KIND, AMOUNT, CONTENT, TO_CHAR(WDATE,'YY-MM-DD') " 
+					+ " FROM ACCOUNTBOOK " 
+					+ " WHERE CONTENT LIKE '" + likestr + "' "
+						+ " AND ID =  ? "; // '?'에 외부 데이터가 들어온다.
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		List<AccountBookDto> list = new ArrayList<AccountBookDto>();
+		
+		try {
+			conn = DBConnection.getConnection();
+			psmt = conn.prepareStatement(sql);
+			psmt.setString(1, id); 
+			
+			rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				String _io_king = rs.getString("IO_KIND");
+				int _amount = rs.getInt("AMOUNT");
+				String _content = rs.getString("CONTENT");
+				String _wdate = rs.getString("TO_CHAR(WDATE,'YY-MM-DD')");
+				
+				list.add(new AccountBookDto(0, "", _io_king, _amount, _content, _wdate));
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBClose.close(psmt, conn, rs);
+		}
+
+		return list;
+	}
 }

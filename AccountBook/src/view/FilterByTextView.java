@@ -1,71 +1,59 @@
 package view;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.*;
 import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import dao.*;
-import dto.*;
+import dao.AccountBookDao;
+import dao.MemberDao;
+import dto.AccountBookDto;
 
-public class FilterByPeriodView extends JFrame implements ActionListener {
-	private JTextField textField[];
-	private JLabel label[];
-	private JLabel title;
+public class FilterByTextView extends JFrame implements ActionListener {
+	private JTextField textField;
+	private JLabel title, label;
 	private JButton resultBtn, preBtn;
 	private JTextArea textArea;
-	
-	public FilterByPeriodView() {
-		super("기간별 검색하기");
+
+	public FilterByTextView() {
+		super("항목별 검색하기");
 		setLayout(null);
 
 		// title -------------------------------
-		title = new JLabel("기간별 검색하기");
-		title.setBounds(20, 30, 260, 24);
+		title = new JLabel("항목별 검색하기");
+		title.setBounds(20, 30, 300, 24);
 		title.setHorizontalAlignment(JLabel.CENTER);
 		Font f1 = new Font("SanSerif", Font.PLAIN, 20);
 		title.setFont(f1);
 		add(title);
 
-
 		// Label --------------------------------
 
-		label = new JLabel[3];
-		
-		String textLabel[] = {"시작일", "종료일", "검색 결과"};
-
-		for (int i = 0; i < label.length; i++) {
-			label[i] = new JLabel(textLabel[i]);
-			label[i].setBounds(20, 65 + (65 * i), 100, 30);
-			add(label[i]);
-		}
-		
-		label[2].setBounds(20, 265, 100, 30);
+		label = new JLabel("검색 결과");
+		label.setBounds(20, 127, 100, 20);
+		add(label);
 
 		// TextField ----------------------------
 
-		textField = new JTextField[2];
-		for (int i = 0; i < textField.length; i++) {
-			textField[i] = new JTextField(20);
-			textField[i].setBounds(20, 95 + (65 * i), 260, 30);
-			add(textField[i]);
-		}
-		
+		textField = new JTextField(20);
+		textField.setBounds(20, 73, 208, 30);
+		add(textField);
+
 		// TextArea ------------------------------
 		textArea = new JTextArea();
-		textArea.setBounds(20, 294, 260, 150);
+		textArea.setBounds(20, 151, 300, 150);
 		Border border = BorderFactory.createLineBorder(Color.DARK_GRAY);
 		textArea.setBorder(BorderFactory.createCompoundBorder(border, BorderFactory.createEmptyBorder(1, 1, 1, 1)));
-		add(textArea);
-		
+		add(textArea); 
 
 		// Btn -----------------------------------
 
-		resultBtn = new JButton("결과 보기");
+		resultBtn = new JButton("검색");
 		resultBtn.addActionListener(this);
-		resultBtn.setBounds(20, 205, 260, 36);
+		resultBtn.setBounds(236, 73, 84, 30);
 		add(resultBtn);
 
 		preBtn = new JButton("<");
@@ -74,12 +62,12 @@ public class FilterByPeriodView extends JFrame implements ActionListener {
 		add(preBtn);
 
 		// Basic setting -------------------------
-		setBounds(100, 100, 316, 504);
+		setBounds(100, 100, 356, 360);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JButton btn = (JButton) e.getSource();
@@ -94,17 +82,16 @@ public class FilterByPeriodView extends JFrame implements ActionListener {
 		
 		//결과 보기 --------------------------------------
 		
-		if (btnTitle.equals("결과 보기")) {
+		if (btnTitle.equals("검색")) {
 			
 			// 필터에 사용될 변수
 			String id = MemberDao.getInstace().getLoginID();
-			String startDay = textField[0].getText();
-			String endDay = textField[1].getText();		
+			String content = textField.getText();	
 
 			AccountBookDao dao = AccountBookDao.getInstace();
-			List<AccountBookDto> list = dao.FilterByPeriod(id, startDay, endDay);
+			List<AccountBookDto> list = dao.FilterByText(id, content);
 			
-			if (list.size() != 0) {
+			if (list.size() > 0 && !content.equals("")) {
 				for (AccountBookDto a : list) {
 					
 					String io;
@@ -116,19 +103,14 @@ public class FilterByPeriodView extends JFrame implements ActionListener {
 										+ a.getAmount() + "원\t"
 										+ a.getContent() +"\n" );
 				}
-				
 				list = null;
+				
+				textField.setText("");
 
 			} else {
-				JOptionPane.showMessageDialog(null, "해당 기간에 데이터가 존재하지 않습니다.");
-				for (int i = 0; i < textField.length; i++) {
-					textField[i].setText("");
+				JOptionPane.showMessageDialog(null, "\'" + content + "\'에 대한 검색 결과가 없습니다.");
+					textField.setText("");
 				}
 			}
-			
-		}
-		
-		
 	}
-	
 }

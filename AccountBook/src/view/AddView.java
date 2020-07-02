@@ -1,22 +1,17 @@
 package view;
 
 import java.awt.*;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
+import java.awt.event.*;
 import javax.swing.*;
-
-import dao.AccountBookDao;
-import dao.MemberDao;
+import dao.*;
 import dto.AccountBookDto;
 
 public class AddView extends JFrame implements ActionListener {
 	private JTextField textField[];
 	private JLabel label[];
 	private JLabel title;
-	private JButton addBtn;
-	JComboBox choice;
+	private JButton addBtn, preBtn;
+	private JComboBox choice; 
 
 	public AddView() {
 		super("Sign in");
@@ -24,7 +19,7 @@ public class AddView extends JFrame implements ActionListener {
 		setLayout(null);
 
 		// title --------------------------------
-		title = new JLabel("Add");
+		title = new JLabel("입/출 내역 추가하기");
 		title.setBounds(20, 30, 260, 24);
 		title.setHorizontalAlignment(JLabel.CENTER);
 		Font f1 = new Font("SanSerif", Font.PLAIN, 20);
@@ -69,6 +64,11 @@ public class AddView extends JFrame implements ActionListener {
 		addBtn.setBounds(20, 263, 260, 36);
 		addBtn.addActionListener(this);
 		add(addBtn);
+		
+		preBtn = new JButton("<");
+		preBtn.addActionListener(this);
+		preBtn.setBounds(0, 0, 50, 30);
+		add(preBtn);
 
 	// Basic setting -------------------------
 		setBounds(100, 100, 316, 360);
@@ -103,7 +103,7 @@ public class AddView extends JFrame implements ActionListener {
 			int amount = Integer.parseInt(textField[0].getText());
 			
 			// content
-			String content = textField[0].getText();
+			String content = textField[1].getText();
 			
 			// data insert
 			AccountBookDao abo = AccountBookDao.getInstace();

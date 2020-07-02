@@ -46,7 +46,6 @@ public class loginView extends JFrame implements ActionListener {
 		for (int i = 0; i < textField.length; i++) {
 			textField[i] = new JTextField(20);
 			textField[i].setBounds(20, 95 + (65 * i), 260, 30);
-			textField[0].setBounds(20, 95, 260, 30);
 			add(textField[i]);
 		}
 

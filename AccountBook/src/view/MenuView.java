@@ -28,7 +28,7 @@ public class MenuView extends JFrame implements ActionListener  {
 
 		btn = new JButton[3];
 		
-		String label[] = {"추가", "기간별 내역", "항목별 검색"};
+		String label[] = {"입/출 내역 추가하기", "기간별 검색하기", "항목별 검색하기"};
 	
 		for (int i = 0; i < btn.length; i++) {
 			btn[i] = new JButton(label[i]);
@@ -49,9 +49,16 @@ public class MenuView extends JFrame implements ActionListener  {
 		String btnTitle = btn.getLabel();
 		
 		// 뒤로가기
-		if (btnTitle.equals("추가")) {
+		if (btnTitle.equals("입/출 내역 추가하기")) {
 				dispose();
 				new AddView();
+
+		}
+		
+		// 뒤로가기
+		if (btnTitle.equals("기간별 검색하기")) {
+				dispose();
+				new FilterByPeriodView();
 
 		}
 		

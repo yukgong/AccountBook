@@ -23,6 +23,7 @@ public class AccountBookDto {
 	public AccountBookDto() {
 	}
 
+
 	public AccountBookDto(int seq, String id, String io_kind, int amount, String content, String wdate) {
 		super();
 		this.seq = seq;
